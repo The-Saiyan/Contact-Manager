@@ -47,7 +47,8 @@ public class HomeController {
     }
     // this is for registering the user
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String registerUser(@Valid @ModelAttribute("user") UserRequest user, BindingResult result, @RequestParam(value = "agreement", defaultValue = "false") boolean agreement,
+    public String registerUser(@Valid @ModelAttribute("user") UserRequest user, BindingResult result,
+                               @RequestParam(value = "agreement", defaultValue = "false") boolean agreement,
                                Model model, HttpSession session) {
     	try {
     	    if (!agreement) {
