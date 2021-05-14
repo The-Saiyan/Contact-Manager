@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th ="http://www.thymeleaf.org" th:replace="normal/userbase::layout(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+</head>
+<body>
+<section>
+    <div class="card mr-3 ml-3 text-center" style = "font-family: 'Open Sans';">
+        <div class="card-body">
+            <h1 style = "font-family: 'Open Sans';">Showing contacts</h1>
+            <table class="table table-hover table-bordered table-responsive-sm" style = "width: 100%;">
+                <thead class="thead text-center" style = "background-color : #0D242C; color : white;">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone No.</th>
+                    <th scope="col">Work</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each = "c : ${contactList}">
+                    <th class = "text-center" scope="row" th:text = "${'SCM2021' + c.cId}"></th>
+                    <td class = "text-center">
+                        <img style = "float : left;" class = "my_profile_photo" src="" th:src = "@{'/img/' + ${c.imageUrl}}"/>
+                        <a th:href = "@{'/user/' +${c.cId}+'/contact'}">
+                            <span th:text = "${c.name}"></span>
+                        </a>
+                    </td>
+                    <td  class = "text-center">
+                            <span th:text = "${c.email}"></span>
+                    </td>
+                    <td th:text = "${c.phone}" class = "text-center"></td>
+                    <td th:text = "${c.work}" class = "text-center"></td>
+                    <td class = "text-center">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!--      Pagination is from here      -->
+            <nav aria-label="Page navigation example" th:if = "${totalPages}">
+                <ul class="pagination">
+                    <li th:if = "${currentPage != 0}" class="page-item">
+                        <a th:href = "@{'/user/show-contacts/' + ${currentPage - 1}}" class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                    <li th:classappend = "${currentPage == i-1 ? 'active' : ''}" th:each = "i : ${#numbers.sequence(1, totalPages)}" class="page-item"><a th:href = "@{'/user/show-contacts/' + ${i-1}}" class="page-link"><span th:text = "${i}"></span></a></li>
+                    <li th:if = "${currentPage + 1 != totalPages}" class="page-item">
+                        <a th:href = "@{'/user/show-contacts/' + ${currentPage + 1}}" class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+</body>
+</html>
