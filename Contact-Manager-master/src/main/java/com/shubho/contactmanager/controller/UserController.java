@@ -93,7 +93,7 @@ public class UserController {
         String userName = principal.getName();
         User user = userRepository.getUserByUserEmail(userName);
         // setting pageable of page and the number of rows per page
-        // in this case "page" is our variable and number of rows per page is 5
+        // in this case "page" is our variable and number of rows per page is 10
         Pageable pageable = PageRequest.of(page, 10);
         Page<Contact> contactList = this.contactRepository.findContactByUser(user.getId(), pageable);
         m.addAttribute("contactList", contactList);
