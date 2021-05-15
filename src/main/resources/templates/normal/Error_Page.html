@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th ="http://www.thymeleaf.org" th:replace="normal/userbase::layout(~{::section})">
+<head>
+  <meta charset="UTF-8">
+  <title>You did something wrong</title>
+</head>
+<body>
+<section>
+  <div class="alert alert-warning mt-3" role="alert" th:unless = "${contact}">
+    This contact id is not in your contact list.
+  </div>
+</section>
+</body>
+</html>

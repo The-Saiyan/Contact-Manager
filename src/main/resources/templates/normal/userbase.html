@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en" xmlns:th ="http://www.thymeleaf.org" th:fragment="layout(content)">
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous"/>
+    <title th:text="${title}"></title>
+    
+</head>
+<body style = "font-family: 'Open Sans';">
+
+	<!-- NAVBAR --> 
+	<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg">
+	  <a class="navbar-brand">Contact Manager</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+	
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <ul class="navbar-nav ml-auto">
+			<li class="nav-item active">
+				<a class="nav-link"  href="#">
+					<i class="fas fa-user fa-lg" style = "color:white;"></i>&nbsp;
+					<span th:text="${user.name}"></span>
+				</a>
+			</li>
+	      <li class="nav-item active">
+	        <a class="nav-link" th:href="@{/user/index}">Home<span class="sr-only">(current)</span></a>
+	      </li>
+	      <li class="nav-item active">
+	        <a class="nav-link" href="#">About</a>
+	      </li>
+	      <li class="nav-item active">
+	        <a class="nav-link" th:href="@{/logout}">Logout</a>
+	      </li>
+	    </ul>
+	  </div>
+	</nav>
+	<!-- End of NavBar  -->
+		
+	<!-- This is sidebar -->
+	<div class="sidebar text-center" style="margin-top : 8px;">
+		<span onclick="toggleSidebar()" class = "cross-btn" style="color : white;">&times;</span>
+		<a style="margin-top : 8px;" href="" th:href="@{/user/index}" class="item"><i class="fas fa-home"></i> Home</a>
+		<a style="margin-top : 8px;" href="" th:href="@{/user/show-contacts/0}" class="item"><i class="fas fa-address-book"></i> View Contacts</a>
+		<a style="margin-top : 8px;" href="" th:href="@{/user/add-contact}" class="item"><i class="fas fa-pencil-alt"></i> Add Contact</a>
+		<a style="margin-top : 8px;" href="" class="item"><i class="fas fa-user"></i> Your Profile</a>
+		<a style="margin-top : 8px;" href="" class="item"><i class="fas fa-cog"></i> Settings</a>
+		<a style="margin-top : 8px;" href="" th:href="@{/logout}" class="item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+	</div>
+	<!-- End of Sidebar -->
+
+	<!-- Content area -->
+	<div class="content mt-5">
+		<i style = "cursor : pointer;" onclick="toggleSidebar()" class="fas fa-bars m-3"></i>
+		<div th:if= "${session.message}" class = "container">
+			<div class="alert text-center" th:classappend = "${'alert-' + session.message.type}" role="alert">
+				<span th:text = "${session.message.content}"></span>
+			</div>
+			<th:block th:text = "${#session.removeAttribute('message')}"></th:block>
+		</div>
+
+		<div th:replace="${content}"></div>
+	</div>
+	<!-- End of Content Area -->
+	
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script th:src="@{/js/script.js}"></script>
+	
+</body>
+</html>

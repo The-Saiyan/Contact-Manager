@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th ="http://www.thymeleaf.org" th:replace="normal/userbase::layout(~{::section})">
+<head>
+  <meta charset="UTF-8">
+  <title>home</title>
+</head>
+<body>
+<section>
+    <div class="card mr-3 ml-3" th:if = "${contact}" style = "font-family: 'Open Sans';">
+      <div class="card-body text-center">
+          <div class="container">
+            <img style = "height : 200px; width : 200px;" class = "my_profile_photo text-center" src="" th:src = "@{'/img/' + ${contact.imageUrl}}"/>
+            <h2 class = "mt-3 text-center"><b><span class = "mt-3" th:text = "${contact.name}"></span></b> (<span th:text = "${contact.nickName}"></span>)</h2>
+            <table class="table thead-dark mt-3" style="float:left;">
+              <thead>
+              <tr>
+                <th scope="col" style="width: 33.33%">#ID</th>
+                <th scope="col" style="width: 33.33%"><span th:text = "${'SCM2021' + contact.cId}"></span></th>
+                <th scope="col" style="width: 33.33%"></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <th scope="row">
+                  <span>Work</span>
+                </th>
+                <td>
+                  <span th:text = "${contact.work}"></span>
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <span>Email Id</span>
+                </th>
+                <td>
+                  <b><span th:text = "${contact.email}" id="email"></span> <span class="res"></span></b>
+
+                  ></i>
+                </td>
+                <td>
+                  <span></span>
+                  <i class="far fa-copy" style = "float : right; cursor : pointer;"
+                     onclick = "copyToClipBoard(email)"></i>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <span>Phone No.</span>
+
+                </th>
+                <td>
+                  <span th:text = "${contact.phone}" id = "ph_num"></span>
+                </td>
+                <td>
+                  <span></span>
+                  <i class="far fa-copy" style = "float : right; cursor : pointer;"
+                     onclick = "copyToClipBoard(ph_num)"></i>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <h4 class = "description"><b>Description</b></h4>
+            <p th:text = "${contact.description}" style = "color : gray;"></p>
+          </div>
+        <button class="btn btn-primary btn-sm mt-3" style = "width : 30%;">Update</button>
+        <button class = "btn btn-danger btn-sm mt-3" style = "width : 30%;">Delete</button>
+      </div>
+    </div>
+  <div class="alert alert-warning mt-3" role="alert" th:unless = "${contact}">
+    This contact id is not in your contact list
+  </div>
+</section>
+
+
+
+
+<!--Js Function to copy text to clipboard-->
+</body>
+</html>
