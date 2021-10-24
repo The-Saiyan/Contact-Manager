@@ -25,7 +25,7 @@ public class User {
     private String password;
     private String role;
     private Boolean enabled;
-    private String imageUrl;
+    private String imageUrl = "defaultImage.png";
     @Column(length = 500)
     private String about;
 

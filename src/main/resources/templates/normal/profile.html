@@ -1,10 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th ="http://www.thymeleaf.org" th:replace="normal/userbase::layout(~{::section})">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
 </head>
 <body>
-$END$
+<section>
+    <div class="container">
+        <div class="card">
+            <div class="card-body text-center">
+                <img style = "height : 200px; width : 200px;" class = "my_profile_photo text-center" src="" th:src = "@{'/img/' + ${user.imageUrl}}"/>
+                <h1 class="text-center" th:text = "${user.name}"></h1>
+                <table class="text-center table thead-dark mt-3" style="float:left;">
+                    <thead>
+                    <tr>
+                      <th scope="col" style="width: 33.33%">USER-ID</th>
+                      <th scope="col" style="width: 33.33%"><span th:text = "${'SCM2021' + user.id}"></span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">
+                            <span>Role</span>
+                        </th>
+                        <td>
+                            <span th:text = "${user.role}" id = "role"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        <span>Email Id</span>
+                      </th>
+                      <td>
+                        <span th:text = "${user.email}" id="email"></span> <span class="res"></span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        <span>Status</span>
+                      </th>
+                      <td>
+                        <span th:text = "${user.enabled}" id = "ph_num"></span>
+                      </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <span>User Details</span>
+                        </th>
+                        <td>
+                            <span th:text = "${user.about}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>

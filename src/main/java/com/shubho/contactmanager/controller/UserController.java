@@ -11,6 +11,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,8 @@ public class UserController {
     ContactRepository contactRepository;
     @Autowired
     UserServices userServices;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @ModelAttribute
     public void addUserToAll(Model model, Principal principal) {
@@ -49,6 +52,7 @@ public class UserController {
     public String dashboard(Model model, Principal principal) {
         return "normal/user_dashboard";
     }
+
     // Opening add contact form
     @GetMapping("/add-contact")
     public String openAddContactForm(Model model) {
@@ -62,15 +66,14 @@ public class UserController {
     public String processContact(@RequestPart("photo") MultipartFile file,
                                  HttpSession httpSession,
                                  @ModelAttribute Contact contact, Principal principal) {
-        try{
+        try {
             String username = principal.getName();
             User user = userRepository.getUserByUserEmail(username);
             //Uploading image file
             if (file.isEmpty()) {
                 // error message goes here
                 System.out.println("File is empty");
-            }
-            else {
+            } else {
                 contact.setImageUrl(file.getOriginalFilename());
                 File file1 = new ClassPathResource("static/img").getFile();
                 Path path = Paths.get(file1.getAbsolutePath() + File.separator + file.getOriginalFilename());
@@ -82,8 +85,7 @@ public class UserController {
             this.userRepository.save(user);
             System.out.println("Data" + contact);
             httpSession.setAttribute("message", new Message("Your contact is added successfully!", "success"));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Error" + e.getMessage());
             httpSession.setAttribute("message", new Message("Something went wrong!", "danger"));
         }
@@ -92,7 +94,7 @@ public class UserController {
 
     // pagination logic -> one page will contain 5 contacts
     @GetMapping("/show-contacts/{page}")
-    public String showContacts(@PathVariable("page") int page,Model m, Principal principal) {
+    public String showContacts(@PathVariable("page") int page, Model m, Principal principal) {
         m.addAttribute("title", "View Contacts");
         String userName = principal.getName();
         User user = userRepository.getUserByUserEmail(userName);
@@ -131,12 +133,47 @@ public class UserController {
         User user = this.userRepository.getUserByUserEmail(username);
         Contact contact = contactOptional.get();
         System.out.println(contact);
-        if (contact != null && user.getId() == contact.getUser().getId()) {
+        if (user.getId() == contact.getUser().getId()) {
             contact.setUser(null);
             this.contactRepository.delete(contact);
             session.setAttribute("message", new Message("Contact deleted successfully.", "success"));
-        }
-        else return "normal/Error_Page";
+        } else return "normal/Error_Page";
         return "redirect:/user/show-contacts/0";
+    }
+
+    @GetMapping("/userProfile")
+    public String yourProfile(Principal principal, Model model) {
+        String username = principal.getName();
+        User user = this.userRepository.getUserByUserEmail(username);
+        model.addAttribute("user", user);
+        return "normal/profile";
+    }
+
+
+    // Controller for opening settings tab
+    @GetMapping("/settings")
+    public String openSettings() {
+        return "normal/settings";
+    }
+
+    //Change password
+    @PostMapping("/change-password")
+    public String changePassword(@RequestParam("oldPassword") String oldPassword,
+                                 @RequestParam("newPassword") String newPassword,
+                                 @RequestParam("confirmPassword") String confirmPassword,
+                                 Principal principal,
+                                 HttpSession session) {
+        User currentUser = this.userRepository.getUserByUserEmail(principal.getName());
+        if (newPassword != "" && newPassword != null
+                && bCryptPasswordEncoder.matches(oldPassword, currentUser.getPassword())
+                && newPassword.equals(confirmPassword)) {
+            currentUser.setPassword(this.bCryptPasswordEncoder.encode(newPassword));
+            this.userRepository.save(currentUser);
+            session.setAttribute("message", new Message("Your password is changes ", "success"));
+        } else {
+            session.setAttribute("message", new Message("Wrong Password", "danger"));
+            return "redirect:/user/settings";
+        }
+        return "redirect:/user/index";
     }
 }

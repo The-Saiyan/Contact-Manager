@@ -1,6 +1,7 @@
 package com.shubho.contactmanager.repository;
 
 import com.shubho.contactmanager.model.Contact;
+import com.shubho.contactmanager.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,5 @@ import java.util.List;
 public interface ContactRepository extends JpaRepository<Contact, Long> {
     @Query("from Contact as c where c.user.id = :userId")
     public Page<Contact> findContactByUser(@Param("userId") long userId, Pageable pageable);
+    public List<Contact> findByNameContainingAndUser(String keyword, User user);
 }
