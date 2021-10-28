@@ -78,4 +78,10 @@ public class HomeController {
     	}
     }
 
+    // Handler for resetting password
+    @GetMapping("/forgotPassword")
+    public String forGotPassword(Model model) {
+        model.addAttribute("title", "Forgot Password ?");
+        return "forgotPassword";
+    }
 }

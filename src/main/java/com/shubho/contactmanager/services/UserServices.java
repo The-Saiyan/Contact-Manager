@@ -21,11 +21,4 @@ public class UserServices {
         userRepository.save(user);
         return TransformObject.getUserResponse(user);
     }
-//    public void deleteUsersContact(User user, long cId) {
-//        List<Contact> contacts = user.getContacts();
-//        for (int i = 0; i < contacts.size(); i++) {
-//            if (contacts.get(i).getCId() == cId) contacts.remove(i);
-//        }
-//        this.userRepository.save(user);
-//    }
 }
